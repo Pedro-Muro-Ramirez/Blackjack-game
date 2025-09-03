@@ -4,10 +4,13 @@ let cards = []
 let sumEl = document.getElementById("sum-el")
 let messageEl = document.getElementById("message-el") 
 let cardsEl = document.getElementById("cards-el")
+let hasBlackJack = false
+let isAlive = false
 
 
 // Random Number Function
 function randomNumber() {
+    isAlive = true
     let randomNumber = Math.floor( Math.random()*13 ) + 1
     if (randomNumber > 10) {
         return 10
@@ -31,25 +34,27 @@ function startGame() {
 // Render Game text function
 function renderText() {
     cardsEl.textContent = `Cards: `
-    sumEl.textContent = `Sum: `
-    let total = 0
     for (let i = 0; i < cards.length; i++) {
          cardsEl.textContent += cards[i] + " "
-         total += cards[i]
-         sumEl.textContent = `Sum: ${total}`
     }
+    sumEl.textContent = `Sum: ${sum}`
      if (sum > 21) {
         messageEl.textContent = `You're out of the game`
+        isAlive = false
     } else if (sum < 21) {
         messageEl.textContent = `Do you want to draw a new card?`
     } else {
         messageEl.textContent = `You've won!`
+        hasBlackJack = true
     }
 }
 
 // Add new card function 
 function newCard() {
-    let randomNum = randomNumber()
-    cards.push(randomNum)
-    renderText()
+    if (isAlive && hasBlackJack === false) {
+        let randomNum = randomNumber()
+        sum += randomNum
+        cards.push(randomNum)
+        renderText()
+    }
 }
